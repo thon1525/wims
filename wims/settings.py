@@ -44,16 +44,18 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 CORS_ALLOW_HEADERS = ["content-type", "authorization", "cookie"]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Vite dev server
+    "http://localhost:5173",  # Vite dev server (corrected port)
     "https://frontendwimssystem.vercel.app",
     "https://frontendwimssystem-git-main-horn-thorns-projects.vercel.app",
     "https://frontendwimssystem-bgpd58gcp-horn-thorns-projects.vercel.app",
+    "https://frontendwimssystem-qdhpj45z7u-horn-thorns-projects.vercel.app",  # New domain from image
 ]
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost:5173",
     "https://frontendwimssystem.vercel.app",
     "https://frontendwimssystem-git-main-horn-thorns-projects.vercel.app",
     "https://frontendwimssystem-bgpd58gcp-horn-thorns-projects.vercel.app",
+    "https://frontendwimssystem-qdhpj45z7u-horn-thorns-projects.vercel.app",
 ]
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SAMESITE = "None"
