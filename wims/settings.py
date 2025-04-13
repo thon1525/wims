@@ -22,7 +22,6 @@ SECRET_KEY = 'django-insecure-ct&57!crf=#rp+g#z@+dt-5*8b9kjx%m4nwdo5kx2ec+s32j)3
 
 # DEBUG = env.bool("DEBUG", default=True)  # Load from .env
 DEBUG = True
-# ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'wims-z0uz.onrender.com']
 # CORS & CSRF Configuration
 # CORS_ALLOW_ALL_ORIGINS = False  # Allow all only in debug mode
@@ -45,10 +44,8 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 CORS_ALLOW_HEADERS = ["content-type", "authorization", "cookie"]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # For local development
     "https://frontendwimssystem.vercel.app/",  # Main Vercel domain
-    "https://frontendwimssystem-git-main-horn-thorns-projects.vercel.app/",  # Git branch domain
-    "https://frontendwimssystem-bgpd58gcp-horn-thorns-projects.vercel.app/",  # Another branch domain
+ 
 ]
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SAMESITE = "None"
