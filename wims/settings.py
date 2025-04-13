@@ -46,9 +46,9 @@ CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 CORS_ALLOW_HEADERS = ["content-type", "authorization", "cookie"]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # For local development
-    "https://frontendwimsystem.vercel.app",  # Main Vercel domain
-    "https://frontendwimsystem-git-main-horn-thorns-projects.vercel.app",  # Git branch domain
-    "https://frontendwimsystem-bgpd58gcp-horn-thorns-projects.vercel.app",  # Another branch domain
+    "https://frontendwimssystem.vercel.app/",  # Main Vercel domain
+    "https://frontendwimssystem-git-main-horn-thorns-projects.vercel.app/",  # Git branch domain
+    "https://frontendwimssystem-bgpd58gcp-horn-thorns-projects.vercel.app/",  # Another branch domain
 ]
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SAMESITE = "None"
