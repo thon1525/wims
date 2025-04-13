@@ -45,12 +45,17 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 CORS_ALLOW_HEADERS = ["content-type", "authorization", "cookie"]
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # For local development
+    "https://frontendwimsystem.vercel.app",  # Main Vercel domain
+    "https://frontendwimsystem-git-main-horn-thorns-projects.vercel.app",  # Git branch domain
+    "https://frontendwimsystem-bgpd58gcp-horn-thorns-projects.vercel.app",  # Another branch domain
+]
 CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
-SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "None"
 
 
 # Installed apps
@@ -160,7 +165,7 @@ SIMPLE_JWT = {
     "AUTH_COOKIE_SECURE": not DEBUG,  # True in production
     "AUTH_COOKIE_HTTP_ONLY": True,
     "AUTH_COOKIE_PATH": "/",
-    "AUTH_COOKIE_SAMESITE": "Lax",  # Consistent with frontend
+    "AUTH_COOKIE_SAMESITE": "None",  # Consistent with frontend
 }
 
 
