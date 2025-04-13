@@ -1,0 +1,1 @@
+gunicorn wims.wsgi:application
