@@ -24,6 +24,7 @@ from .serializers import SupplierSerializer,WarehouseLocation,WarehouseStockPlac
 from rest_framework.decorators import action
 from .models import Supplier,Warehouse,WarehouseStockAudit
 from rest_framework.exceptions import ValidationError
+from django.http import JsonResponse
 import pandas as pd
 User = get_user_model()
 import logging
@@ -36,6 +37,10 @@ def hello_world(request):
     return Response({"message": "Hello, World!"})
 
 # 🔹 Protected Admin Dashboard (Requires Authentication)
+
+def health_check(request):
+    return JsonResponse({"status": "ok"}, status=200)
+
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def admin_dashboard(request):

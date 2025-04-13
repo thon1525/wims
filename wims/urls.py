@@ -5,7 +5,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from .views import CategoryListCreateView
 from rest_framework.routers import DefaultRouter
-from .views import SupplierViewSet,ProductViewSet,WarehouseViewSet,WarehouseLocationListCreateView, WarehouseLocationDetailView,StockTransactionsViewSet,CategoryDetailView,CustomerListCreateView, CustomerDetailView,CustomerAccountViewSet,OrderViewSet
+from .views import SupplierViewSet,ProductViewSet,WarehouseViewSet,WarehouseLocationListCreateView, WarehouseLocationDetailView,StockTransactionsViewSet,CategoryDetailView,CustomerListCreateView, CustomerDetailView,CustomerAccountViewSet,OrderViewSet,health_check
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -29,6 +29,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('api/', include(router.urls)),
     path('api/customers/', CustomerListCreateView.as_view(), name='customer-list-create'),
+    path('health/', health_check, name='health_check'),
     path('api/customers/<int:customer_id>/', CustomerDetailView.as_view(), name='customer-detail'),
     path('api/stock-audits/', WarehouseStockAuditListCreateView.as_view(), name='stock_audit_list_create'),
     path('api/stock-audits/<int:pk>/', WarehouseStockAuditDetailView.as_view(), name='stock_audit_detail'),
