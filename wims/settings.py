@@ -30,16 +30,16 @@ CORS_ALLOW_HEADERS = ["content-type", "authorization", "cookie"]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Vite dev server (corrected port)
     "https://frontendwimssystem.vercel.app",
-    "https://frontendwimssystem-git-main-horn-thorns-projects.vercel.app",
-    "https://frontendwimssystem-bgpd58gcp-horn-thorns-projects.vercel.app",
-    "https://frontendwimssystem-qdhpj45z7u-horn-thorns-projects.vercel.app",  # New domain from image
+    "https://frontendwimssystem-horn-thorns-projects.vercel.app",
+    "https://frontendwimssystem-thon1525-horn-thorns-projects.vercel.app",
+    "https://frontendwimssystem-5m7ibfnbr-horn-thorns-projects.vercel.app",  # New domain from image
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://frontendwimssystem.vercel.app",
-    "https://frontendwimssystem-git-main-horn-thorns-projects.vercel.app",
-    "https://frontendwimssystem-bgpd58gcp-horn-thorns-projects.vercel.app",
-    "https://frontendwimssystem-qdhpj45z7u-horn-thorns-projects.vercel.app",
+    "https://frontendwimssystem-horn-thorns-projects.vercel.app",
+    "https://frontendwimssystem-thon1525-horn-thorns-projects.vercel.app",
+    "https://frontendwimssystem-5m7ibfnbr-horn-thorns-projects.vercel.app",
     "https://wims-z0uz.onrender.com",
 ]
 CSRF_COOKIE_HTTPONLY = False
