@@ -179,7 +179,7 @@ def get_user_info(request):
         traceback.print_exc()
         return Response({"error": "Internal Server Error", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-
+@permission_classes([IsAuthenticated])
 class SupplierViewSet(viewsets.ModelViewSet):
     queryset = Supplier.objects.all().order_by("name_company")
     serializer_class = SupplierSerializer   

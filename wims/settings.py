@@ -23,22 +23,6 @@ SECRET_KEY = 'django-insecure-ct&57!crf=#rp+g#z@+dt-5*8b9kjx%m4nwdo5kx2ec+s32j)3
 # DEBUG = env.bool("DEBUG", default=True)  # Load from .env
 DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'wims-z0uz.onrender.com']
-# CORS & CSRF Configuration
-# CORS_ALLOW_ALL_ORIGINS = False  # Allow all only in debug mode
-# CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
-# CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-# CORS_ALLOW_HEADERS = ["content-type", "authorization"]
-# CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=["http://localhost:3000"])
-# CSRF_COOKIE_HTTPONLY = True
-# CSRF_COOKIE_SAMESITE = "Lax"
-# CSRF_COOKIE_SECURE = not DEBUG  # Secure in production
-# SESSION_COOKIE_SECURE = not DEBUG
-# SESSION_COOKIE_SAMESITE = "None"  # ✅ Required for cross-domain cookies
-
-# wims/settings.py (CORS section)
-# wims/settings.py (CORS section)
-# wims/settings.py (CORS section)
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
@@ -128,30 +112,6 @@ SPECTACULAR_SETTINGS = {
 }
 
 
-# wims/settings.py (SIMPLE_JWT section)
-# SIMPLE_JWT = {
-#     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
-#     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-#     "ROTATE_REFRESH_TOKENS": True,
-#     "BLACKLIST_AFTER_ROTATION": True,
-#     "ALGORITHM": "RS256",
-#     "SIGNING_KEY": SIGNING_KEY,
-#     "VERIFYING_KEY": VERIFYING_KEY,
-#     "AUTH_HEADER_TYPES": ("Bearer",),
-#     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
-#     "USER_ID_FIELD": "id",
-#     "USER_ID_CLAIM": "user_id",
-#     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-#     "TOKEN_TYPE_CLAIM": "token_type",
-#     "JTI_CLAIM": "jti",
-#     "AUTH_COOKIE": "access_token",
-#     "AUTH_COOKIE_REFRESH": "refresh_token",
-#     "AUTH_COOKIE_SECURE": not DEBUG,  # True in production
-#     "AUTH_COOKIE_HTTP_ONLY": True,
-#     "AUTH_COOKIE_PATH": "/",
-#     "AUTH_COOKIE_SAMESITE": "Lax",  # Works with same-origin (proxied) requests
-# }
-
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
@@ -177,21 +137,6 @@ SIMPLE_JWT = {
 
 
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": env("DB_NAME", default="wims_system"),  # Database name
-#         "USER": env("DB_USER", default="root"),  # MySQL username
-#         "PASSWORD": env("DB_PASSWORD", default="thon1626"),  # MySQL password
-#         "HOST": env("DB_HOST", default="127.0.0.1"),  # MySQL host (localhost)
-#         "PORT": env("DB_PORT", default="3307"),  # MySQL port (3307)
-#         "OPTIONS": {
-#             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-#         },
-#     }
-# }
-
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
@@ -206,13 +151,7 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-# Security Headers
+
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
