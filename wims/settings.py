@@ -22,7 +22,7 @@ SECRET_KEY = 'django-insecure-ct&57!crf=#rp+g#z@+dt-5*8b9kjx%m4nwdo5kx2ec+s32j)3
 
 # DEBUG = env.bool("DEBUG", default=True)  # Load from .env
 DEBUG = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'wims-z0uz.onrender.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://wims-z0uz.onrender.com']
 # CORS & CSRF Configuration
 # CORS_ALLOW_ALL_ORIGINS = False  # Allow all only in debug mode
 # CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
