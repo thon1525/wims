@@ -124,25 +124,25 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             refresh_token = response.data.get("refresh")
 
             if access_token and refresh_token:
-                secure_cookie = True  # Always secure in production
-
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE"],
                     value=access_token,
                     httponly=True,
-                    secure=secure_cookie,
+                    secure=True,
                     samesite="None",
                     expires=datetime.datetime.now() + settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
                     path="/",
+                    domain=None,  # Explicitly set to None for cross-origin
                 )
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE_REFRESH"],
                     value=refresh_token,
                     httponly=True,
-                    secure=secure_cookie,
+                    secure=True,
                     samesite="None",
                     expires=datetime.datetime.now() + settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
                     path="/",
+                    domain=None,  # Explicitly set to None for cross-origin
                 )
 
                 logger.info("🔹 Set cookies for access_token and refresh_token")
