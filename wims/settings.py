@@ -26,7 +26,13 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'wims-z0uz.onrender.com']
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-CORS_ALLOW_HEADERS = ["content-type", "authorization", "cookie","x-csrftoken"]
+CORS_ALLOW_HEADERS = [
+    "content-type",
+    "authorization",
+    "x-csrftoken",
+    "accept",
+    "origin",
+]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Vite dev server (corrected port)
     "https://frontendwimssystem.vercel.app",
@@ -42,11 +48,11 @@ CSRF_TRUSTED_ORIGINS = [
     "https://frontendwimssystem-5m7ibfnbr-horn-thorns-projects.vercel.app",
     "https://wims-z0uz.onrender.com",
 ]
-CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SAMESITE = "None"
-CSRF_COOKIE_SECURE = not DEBUG
-SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_HTTPONLY = False
 
 
 # Installed apps
