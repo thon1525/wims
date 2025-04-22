@@ -118,11 +118,10 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
-
+        logger.info("🔹 Set cookies for access_token and refresh_token")
         if response.status_code == status.HTTP_200_OK:
             access_token = response.data.get("access")
             refresh_token = response.data.get("refresh")
-
             if access_token and refresh_token:
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE"],
