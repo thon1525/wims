@@ -17,13 +17,11 @@ logger = logging.getLogger(__name__)
 class CookieJWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
         access_token = request.COOKIES.get("access_token")
-        
+        logger.info(f"🔹 Request cookies: {request.COOKIES}")
         logger.info(f"🔹 Access Token from cookie: {access_token}")
-        print("🔹 Access Token:", access_token)
 
         if not access_token:
             logger.warning("🚨 No access token found in cookies!")
-            print("🚨 No access token found in cookies!")
             return None
 
         try:
@@ -31,9 +29,7 @@ class CookieJWTAuthentication(BaseAuthentication):
             user_id = decoded_token["user_id"]
             user = User.objects.get(id=user_id)
             logger.info(f"✅ Successfully authenticated user: {user.username}")
-            print(f"✅ Successfully authenticated user: {user.username}")
             return (user, None)
-
         except AccessToken.ExpiredToken:
             logger.error("⏰ Access token has expired")
             raise AuthenticationFailed("Access token has expired")
