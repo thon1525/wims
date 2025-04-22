@@ -124,40 +124,31 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             refresh_token = response.data.get("refresh")
 
             if access_token and refresh_token:
-                # Use production domain when not in DEBUG mode
-                cookie_domain = (
-                    "wims-z0uz.onrender.com" if not settings.DEBUG else "localhost"
-                )
+                secure_cookie = not settings.DEBUG  # True in production
 
-                # Set access token cookie
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE"],
                     value=access_token,
                     httponly=True,
-                    secure=not settings.DEBUG,
-                    samesite="None",  # ✅ Required for cross-origin
-                    domain=cookie_domain,
+                    secure=secure_cookie,
+                    samesite="None",  # Required for cross-origin
+                    expires=datetime.datetime.now() + settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
                     path="/",
-                    expires=datetime.now() + settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
                 )
-
-                # Set refresh token cookie
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE_REFRESH"],
                     value=refresh_token,
                     httponly=True,
-                    secure=not settings.DEBUG,
-                    samesite="None",
-                    domain=cookie_domain,
-                    path="/api/token/refresh/",
-                    expires=datetime.now() + settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
+                    secure=secure_cookie,
+                    samesite="None",  # Required for cross-origin
+                    expires=datetime.datetime.now() + settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
+                    path="/",
                 )
 
-                # Remove tokens from response body (optional for security)
+                logger.info("🔹 Set cookies for access_token and refresh_token")
                 del response.data["access"]
                 del response.data["refresh"]
-
-            response.data = {"message": "Login successful"}
+                response.data = {"message": "Login successful"}
         else:
             response.data = {"message": "Invalid credentials"}
 
