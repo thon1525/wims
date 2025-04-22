@@ -131,20 +131,21 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                     value=access_token,
                     httponly=True,
                     secure=secure_cookie,
-                    samesite="Lax",  # Works with same-origin (proxied) requests
+                    samesite="None",  # Works with same-origin (proxied) requests
                     expires=datetime.datetime.now() + settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
                     path="/",
-                    domain="localhost",  # Match the frontend's domain
+                    # domain="localhost",  # Match the frontend's domain
                 )
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE_REFRESH"],
                     value=refresh_token,
                     httponly=True,
                     secure=secure_cookie,
-                    samesite="Lax",
+                    samesite="None",
                     expires=datetime.datetime.now() + settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
-                    path="/api/token/refresh/",
-                    domain="localhost",
+                    # path="/api/token/refresh/",
+                    path="/",
+                    # domain="localhost",
                 )
 
                 del response.data["access"]
