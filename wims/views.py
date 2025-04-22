@@ -115,10 +115,9 @@ class MyProtectedView(APIView):
         return Response({"message": "You are authenticated"})
 class CustomTokenObtainPairView(TokenObtainPairView):
     permission_classes = []
-
+    logger.info("🔹 Set cookies for access_token and refresh_token")
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
-        logger.info("🔹 Set cookies for access_token and refresh_token")
         if response.status_code == status.HTTP_200_OK:
             access_token = response.data.get("access")
             refresh_token = response.data.get("refresh")
@@ -488,42 +487,40 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         
-        # Extract tokens from response data
+        # Extract tokens
         access_token = response.data['access']
         refresh_token = response.data['refresh']
         
-        # Check if "remember me" is in the request
+        # Check "remember me"
         remember_me = request.data.get('remember_me', False)
-        
-        # Set cookie expiration based on "remember me"
-        access_max_age = 60 * 60 * 24  # 1 day default
-        refresh_max_age = 60 * 60 * 24 * 7  # 7 days default
+        access_max_age = 60 * 60 * 24  # 1 day
+        refresh_max_age = 60 * 60 * 24 * 7  # 7 days
         if remember_me:
-            access_max_age = 60 * 60 * 24 * 30  # 30 days for "remember me"
-            refresh_max_age = 60 * 60 * 24 * 60  # 60 days for "remember me"
+            access_max_age = 60 * 60 * 24 * 30  # 30 days
+            refresh_max_age = 60 * 60 * 24 * 60  # 60 days
         
-        # Set cookies in the response
+        # Set cookies
         response.set_cookie(
             key='access_token',
             value=access_token,
             max_age=access_max_age,
             httponly=True,
-            secure=True,  # Use True in production (HTTPS)
-            samesite='Lax'
+            secure=True,  # Must be True in production
+            samesite='None',  # Required for cross-domain
+            path='/',
         )
         response.set_cookie(
             key='refresh_token',
             value=refresh_token,
             max_age=refresh_max_age,
             httponly=True,
-            secure=True,  # Use True in production (HTTPS)
-            samesite='Lax'
+            secure=True,
+            samesite='None',
+            path='/',
         )
         
-        # Remove tokens from response body (optional, since they're in cookies)
         response.data = {"message": "Login successful"}
         return response
-
 
 class UserAPIView(APIView):
     permission_classes = [IsAuthenticated]

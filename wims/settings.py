@@ -118,14 +118,37 @@ SPECTACULAR_SETTINGS = {
 }
 
 
+# SIMPLE_JWT = {
+#     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+#     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+#     "ROTATE_REFRESH_TOKENS": True,
+#     "BLACKLIST_AFTER_ROTATION": True,
+#     "ALGORITHM": "RS256",
+#     "SIGNING_KEY": SIGNING_KEY,
+#     "VERIFYING_KEY": VERIFYING_KEY,
+#     "AUTH_HEADER_TYPES": ("Bearer",),
+#     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+#     "USER_ID_FIELD": "id",
+#     "USER_ID_CLAIM": "user_id",
+#     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+#     "TOKEN_TYPE_CLAIM": "token_type",
+#     "JTI_CLAIM": "jti",
+#     "AUTH_COOKIE": "access_token",
+#     "AUTH_COOKIE_REFRESH": "refresh_token",
+#     "AUTH_COOKIE_SECURE": not DEBUG,  # True in production
+#     "AUTH_COOKIE_HTTP_ONLY": True,
+#     "AUTH_COOKIE_PATH": "/",
+#     "AUTH_COOKIE_SAMESITE": "None",  # Consistent with frontend
+# }
+
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "ALGORITHM": "RS256",
-    "SIGNING_KEY": SIGNING_KEY,
-    "VERIFYING_KEY": VERIFYING_KEY,
+    "SIGNING_KEY": read_key_file(SIGNING_KEY_PATH),
+    "VERIFYING_KEY": read_key_file(VERIFYING_KEY_PATH),
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "USER_ID_FIELD": "id",
@@ -135,13 +158,11 @@ SIMPLE_JWT = {
     "JTI_CLAIM": "jti",
     "AUTH_COOKIE": "access_token",
     "AUTH_COOKIE_REFRESH": "refresh_token",
-    "AUTH_COOKIE_SECURE": not DEBUG,  # True in production
+    "AUTH_COOKIE_SECURE": True,  # Must be True in production
     "AUTH_COOKIE_HTTP_ONLY": True,
     "AUTH_COOKIE_PATH": "/",
-    "AUTH_COOKIE_SAMESITE": "None",  # Consistent with frontend
+    "AUTH_COOKIE_SAMESITE": "None",  # Required for cross-domain
 }
-
-
 
 DATABASES = {
     "default": {
