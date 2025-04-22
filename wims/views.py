@@ -518,7 +518,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             samesite='None',
             path='/',
         )
-        
+        logger.info("🔹 Set cookies for access_token and refresh_token",response.data)
         response.data = {"message": "Login successful"}
         return response
 
