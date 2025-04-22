@@ -125,7 +125,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
             if access_token and refresh_token:
                 secure_cookie = not settings.DEBUG  # True in production
-
+                cookie_domain = (
+                "wims-z0uz.onrender.com" if not settings.DEBUG else "localhost")
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE"],
                     value=access_token,
@@ -134,6 +135,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                     samesite="None",  # Works with same-origin (proxied) requests
                     expires=datetime.datetime.now() + settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
                     path="/",
+                    domain=cookie_domain, 
                     # domain="localhost",  # Match the frontend's domain
                 )
                 response.set_cookie(
@@ -145,7 +147,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                     expires=datetime.datetime.now() + settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
                     # path="/api/token/refresh/",
                     path="/",
-                    # domain="localhost",
+                    domain=cookie_domain,
                 )
 
                 del response.data["access"]
