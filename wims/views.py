@@ -124,35 +124,38 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             refresh_token = response.data.get("refresh")
 
             if access_token and refresh_token:
-                secure_cookie = not settings.DEBUG  # True in production
+                # Use production domain when not in DEBUG mode
                 cookie_domain = (
-                "wims-z0uz.onrender.com" if not settings.DEBUG else "localhost")
+                    "wims-z0uz.onrender.com" if not settings.DEBUG else "localhost"
+                )
+
+                # Set access token cookie
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE"],
                     value=access_token,
                     httponly=True,
-                    secure=secure_cookie,
-                    samesite="None",  # Works with same-origin (proxied) requests
-                    expires=datetime.datetime.now() + settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+                    secure=not settings.DEBUG,
+                    samesite="None",  # ✅ Required for cross-origin
+                    domain=cookie_domain,
                     path="/",
-                    domain=cookie_domain, 
-                    # domain="localhost",  # Match the frontend's domain
+                    expires=datetime.now() + settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
                 )
+
+                # Set refresh token cookie
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE_REFRESH"],
                     value=refresh_token,
                     httponly=True,
-                    secure=secure_cookie,
+                    secure=not settings.DEBUG,
                     samesite="None",
-                    expires=datetime.datetime.now() + settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
-                    # path="/api/token/refresh/",
-                    path="/",
                     domain=cookie_domain,
+                    path="/api/token/refresh/",
+                    expires=datetime.now() + settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
                 )
 
+                # Remove tokens from response body (optional for security)
                 del response.data["access"]
                 del response.data["refresh"]
-                print("🔹 Get Authenticated User Information", access_token)
 
             response.data = {"message": "Login successful"}
         else:
