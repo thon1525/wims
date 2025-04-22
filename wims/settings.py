@@ -248,13 +248,13 @@ CORS_ALLOWED_ORIGINS = [
     "https://frontendwimssystem.vercel.app",
     "https://frontendwimssystem-horn-thorns-projects.vercel.app",
     "https://frontendwimssystem-thon1525-horn-thorns-projects.vercel.app",
-    "https://frontendwimssystem-5m7ibfnbr-horn-thorns-projects.vercel.app",
+    "https://frontendwimssystem-jtin7gouy-horn-thorns-projects.vercel.app",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "https://frontendwimssystem.vercel.app",
     "https://frontendwimssystem-horn-thorns-projects.vercel.app",
     "https://frontendwimssystem-thon1525-horn-thorns-projects.vercel.app",
-    "https://frontendwimssystem-5m7ibfnbr-horn-thorns-projects.vercel.app",
+    "https://frontendwimssystem-jtin7gouy-horn-thorns-projects.vercel.app",
     "https://wims-z0uz.onrender.com",
 ]
 CSRF_COOKIE_SAMESITE = "None"
