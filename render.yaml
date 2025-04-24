@@ -1,1 +1,16 @@
-gunicorn wims.wsgi:application
+services:
+  - type: web
+    name: wims-backend
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn wims.wsgi:application --workers=3"
+    envVars:
+      - key: DEBUG
+        value: false
+      - key: PYTHON_VERSION
+        value: 3.10
+    staticPublishPath: staticfiles
+    disk:
+      name: media
+      mountPath: /media
+      sizeGB: 1

@@ -81,7 +81,7 @@ class WarehouseStockPlacementSerializer(serializers.ModelSerializer):
         model = WarehouseStockPlacement
         fields = [
             'stock_id', 'warehouse', 'warehouse_name', 'product', 'product_name',
-            'location', 'location_section', 'category', 'category_name', 'quantity',
+            'location', 'location_section', 'category', 'category_name', 'quantity','reserved_quantity', 
             'weight', 'storage_type', 'batch_number', 'expiry_date', 'last_updated',
             'min_stock_level', 'max_stock_level'
         ]

@@ -26,6 +26,7 @@ from .models import Supplier,Warehouse,WarehouseStockAudit
 from rest_framework.exceptions import ValidationError
 from django.http import JsonResponse
 import pandas as pd
+from django.db.models import Sum
 User = get_user_model()
 import logging
 
@@ -185,7 +186,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     authentication_classes = [CookieJWTAuthentication]
     permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]  # Enable file uploads
+    parser_classes = [MultiPartParser, FormParser]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, context={'request': request})
@@ -353,49 +354,74 @@ class WarehouseStockPlacementViewSet(viewsets.ModelViewSet):
     @transaction.atomic
     def perform_create(self, serializer):
         """
-        Create a new placement and update product quantity
+        Create a new placement and update product quantity.
         """
-        # Get the product before saving the placement
+        # Get request data
         product_id = self.request.data.get('product')
-        product = get_object_or_404(Product, product_id=product_id)
+        placement_quantity = int(self.request.data.get('quantity', 0))
         transaction_type = self.request.data.get('transaction_type', 'INBOUND')
+
+        # Validate transaction type
         if transaction_type not in dict(StockTransactions.TRANSACTION_TYPES):
             raise serializers.ValidationError(f"Invalid transaction type: {transaction_type}")
-        
-        # Get the quantity from the request data
-        placement_quantity = int(self.request.data.get('quantity', 0))
-        
-        # Check if there's enough quantity in product
-        if transaction_type == 'INBOUND':
-            # For INBOUND, we might want to ADD to product quantity instead of subtract
-            # Adjust this logic based on your business requirements
-            pass  # No validation needed for adding stock
-        elif transaction_type == 'OUTBOUND':
-            # For OUTBOUND, check if there's enough stock
-            if product.quantity < placement_quantity:
-                raise serializers.ValidationError(
-                    f"Insufficient stock. Available: {product.quantity}, Requested: {placement_quantity}"
-                )
-        
-        # Save the placement
-        instance = serializer.save()
-        if transaction_type == 'INBOUND':
-            product.quantity += placement_quantity  # Add stock for inbound
-            logger.info(f"INBOUND: Adding {placement_quantity} to product {product.product_id}")
-        elif transaction_type == 'OUTBOUND':
-            product.quantity -= placement_quantity  # Remove stock for outbound
-            logger.info(f"OUTBOUND: Removing {placement_quantity} from product {product.product_id}")
-        # Update product quantity
-        product.quantity -= placement_quantity
-        product.save()
 
-        StockTransactions.objects.create(
-            stock=instance,
-            transaction_type=transaction_type,
-            quantity=placement_quantity
+        # Get product
+        product = get_object_or_404(Product, product_id=product_id)
+        product_quantity = product.quantity or 0
+
+        # Synchronize product.quantity with WarehouseStockPlacement total
+        stock_aggregates = WarehouseStockPlacement.objects.filter(product_id=product_id).aggregate(
+            total_quantity=Sum('quantity')
         )
-        logger.info(f"Created {transaction_type} transaction for {placement_quantity} units")
+        total_quantity = stock_aggregates['total_quantity'] or 0
+        logger.info(f"Stock aggregates for product {product_id}: {total_quantity}")
 
+        # Update product.quantity to match WarehouseStockPlacement total
+        if product_quantity != total_quantity:
+            logger.info(f"Synchronizing product {product_id} quantity: {product_quantity} -> {total_quantity}")
+            product.quantity = total_quantity
+            product.save()
+            product_quantity = total_quantity
+
+        # Validate stock consistency (raise error if product.quantity > total_quantity)
+        # Note: After synchronization, this check is technically redundant, but included for robustness
+        if product_quantity > total_quantity:
+            raise serializers.ValidationError(
+                f"Product quantity is bigger than stock WarehouseStockPlacement for product {product_id}"
+            )
+
+        # Validate stock for OUTBOUND transaction
+        if transaction_type == 'OUTBOUND':
+            if product_quantity < placement_quantity:
+                raise serializers.ValidationError(
+                    f"Insufficient stock. Available: {product_quantity}, Requested: {placement_quantity}"
+                )
+
+        # Use atomic transaction to ensure data integrity
+        with transaction.atomic():
+            # Save the placement
+            instance = serializer.save()
+
+            # Update product quantity based on transaction type
+            if transaction_type == 'INBOUND':
+                product.quantity += placement_quantity  # Add stock for inbound
+                logger.info(f"INBOUND: Adding {placement_quantity} to product {product.product_id}")
+            elif transaction_type == 'OUTBOUND':
+                product.quantity -= placement_quantity  # Remove stock for outbound
+                logger.info(f"OUTBOUND: Removing {placement_quantity} from product {product.product_id}")
+
+            # Save updated product quantity
+            product.save()
+
+            # Create stock transaction record
+            StockTransactions.objects.create(
+                stock=instance,
+                transaction_type=transaction_type,
+                quantity=placement_quantity
+            )
+            logger.info(f"Created {transaction_type} transaction for {placement_quantity} units")
+
+        return instance
     @transaction.atomic
     def perform_update(self, serializer):
         """

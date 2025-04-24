@@ -70,6 +70,8 @@ INSTALLED_APPS = [
     "corsheaders",
     "drf_spectacular",
       'wims', 
+       'cloudinary',
+    'cloudinary_storage',
 ]
 
 # Middleware
@@ -108,6 +110,13 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     
 }
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'drknmxhog',
+    'API_KEY': '621945364786363',
+    'API_SECRET': 'urf8V8D6YSpXYxz_xM23rcMptzI',
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Spectacular API Schema settings
 SPECTACULAR_SETTINGS = {
@@ -229,8 +238,6 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Static Files
 STATIC_URL = '/static/'
@@ -238,3 +245,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
