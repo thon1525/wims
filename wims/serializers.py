@@ -35,9 +35,9 @@ class ProductSerializer(serializers.ModelSerializer):
             'sku', 'barcode', 'price', 'weight', 'quantity', 'image', 'image_url','unit_type',
             'created_at', 'updated_at', 'is_active'
         ]
-        read_only_fields = ['product_id', 'created_at', 'updated_at', 'category_name', 'supplier_name']
+        read_only_fields = ['product_id', 'created_at', 'updated_at', 'category_name', 'supplier_name','image_url']
     def get_unit_type_choices(self):
-        return [{'value': value, 'label': label} for value, label in Product.UNIT_CHOICES]    
+        return [{'value': value, 'label': label} for value, label in Product.UNIT_CHOICES]   
 
     def get_image_url(self, obj):
         request = self.context.get('request')

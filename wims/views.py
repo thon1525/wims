@@ -194,7 +194,10 @@ class ProductViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+    def get_image_url(self, obj):
+        if obj.image:
+            return obj.image.url  # Return Cloudinary URL directly
+        return None
     @action(detail=False, methods=['get'])
     def choices(self, request):
         return Response({
